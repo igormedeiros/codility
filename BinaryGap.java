@@ -3,45 +3,24 @@ class Solution {
 	public int solution(int N) {
 
 		String binaryString = Integer.toBinaryString(N);
-
-		int occurencesDigit1 = 0;
-		
-		if (binaryString.indexOf('0') == -1)
-			return 0;
-
+		int maxGap = 0;
+		int currentGap = 0;
+		int lastOne = -1;
+		int firstOne = -1;
 		for (int i = 0; i < binaryString.length(); i++) {
-
 			if (binaryString.charAt(i) == '1') {
-				occurencesDigit1++;
+				if (firstOne == -1) {
+					firstOne = i;
+				} else {
+					currentGap = i - lastOne - 1;
+					if (currentGap > maxGap) {
+						maxGap = currentGap;
+					}
+				}
+				lastOne = i;
 			}
 		}
-
-		if (occurencesDigit1 < 2 )
-			return 0;
-
-		int majorGaps = 0;
-
-		for (int i = 0; i < occurencesDigit1; i++) {
-
-			int localGaps = 0;
-			int nextOccurence = binaryString.indexOf('1', i);
-
-			for (int j = nextOccurence + 1; j < binaryString.length(); j++) {
-
-				if (binaryString.charAt(j) == '0')
-					localGaps++;
-				else
-					break;
-
-			}
-
-			if (localGaps > majorGaps)
-				majorGaps = localGaps;
-
-			localGaps = 0;
-		}
-
-		return majorGaps;
+		return maxGap;
 	}
 }
 
